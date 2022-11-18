@@ -78,5 +78,5 @@
 
 - name: Cleanup Temporary Directory
   file:
-    path: "{{ indexer_temp_dir.path }}"
+    path: "{{ __indexer_temp_dir.path }}"
     state: absent
