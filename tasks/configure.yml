@@ -1,0 +1,4 @@
+---
+- name: Debug Statement
+  debug:
+    msg: This is where we should configure indexer
