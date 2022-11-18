@@ -5,3 +5,4 @@
   tasks:
     - name: Install Ansible Dependencies
       ansible.builtin.raw: apt-get update && apt-get install -y --no-install-recommends ca-certificates python3
+      changed_when: False
