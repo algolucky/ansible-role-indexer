@@ -13,6 +13,7 @@
 
 - name: Install Go
   ansible.builtin.unarchive:
+    remote_src: yes
     src: "{{ __indexer_go_download.dest }}"
     dest: /usr/local
     creates: "{{ __indexer_golang_root }}"
