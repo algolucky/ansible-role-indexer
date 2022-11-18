@@ -1,0 +1,18 @@
+---
+
+# git repository URL
+__indexer_repo_url: https://github.com/algorand/indexer
+
+__indexer_golang_version: "1.17.13"
+__indexer_golang_root: /usr/local/go
+
+# indexer build dependencies
+__indexer_dependencies:
+  - build-essential
+  - git
+  - libboost-all-dev
+  - wget
+  - sqlite3
+  - autoconf
+  - bsdmainutils
+

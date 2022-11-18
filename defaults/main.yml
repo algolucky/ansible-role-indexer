@@ -1,0 +1,10 @@
+---
+
+# whether or not to install conduit
+indexer_install_conduit: no
+
+# whether or not to install indexer from source
+indexer_install_from_source: yes
+
+# which version (git ref) of indexer git repository to install
+indexer_source_version: master

@@ -1,0 +1,3 @@
+ansible==6.5.0
+molecule==4.0.3
+moecule-docker==2.1.0

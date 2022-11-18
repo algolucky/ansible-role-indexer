@@ -1,0 +1,4 @@
+---
+- name: Install from Source
+  ansible.builtin.import_tasks: install-from-source.yml
+  when: indexer_install_from_source | bool

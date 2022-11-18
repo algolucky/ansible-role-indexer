@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Execute algorand-indexer
+      ansible.builtin.command: algorand-indexer -h
+      changed_when: false
+      register: __indexer_cmd
+
+    - name: Assert algorand-indexer is installed
+      ansible.builtin.assert:
+        that: __indexer_cmd.rc == 0

@@ -1,0 +1,71 @@
+---
+- name: Create Temporary Directory
+  ansible.builtin.tempfile:
+    state: directory
+  register: __indexer_temp_dir
+
+- name: Download Go
+  ansible.builtin.unarchive:
+    src: https://dl.google.com/go/go{{ __indexer_golang_version }}.linux-amd64.tar.gz
+    dest: /usr/local
+    creates: "{{ __indexer_golang_root }}"
+    # checksum: 4cdd2bc664724dc7db94ad51b503512c5ae7220951cac568120f64f8e94399fc
+    remote_src: yes
+
+- name: Install Dependencies
+  ansible.builtin.package:
+    name: "{{ __indexer_dependencies }}"
+    state: present
+
+- name: Register __indexer_git_dir
+  ansible.builtin.set_fact:
+    __indexer_git_dir: "{{ __indexer_temp_dir.path }}/indexer"
+
+- name: Clone Git Repository
+  ansible.builtin.git:
+    repo: "{{ __indexer_repo_url }}"
+    dest: "{{ __indexer_git_dir }}"
+    track_submodules: yes
+    version: "{{ indexer_source_version }}"
+  register: __indexer_git_repo
+
+- name: Build & Install algorand-indexer
+  block:
+
+    - name: Build algorand-indexer
+      environment:
+        PATH: "{{ ansible_env.PATH }}:{{ __indexer_golang_root }}/bin"
+        GOROOT: "{{ __indexer_golang_root }}"
+        GOPATH: "{{ ansible_env.HOME }}/go"
+        ARCH_TYPE: amd64
+      community.general.make:
+        target: cmd/algorand-indexer/algorand-indexer
+        chdir: "{{ __indexer_git_dir }}"
+
+    - name: Install algorand-indexer
+      ansible.builtin.copy:
+        remote_src: yes
+        src: "{{ __indexer_git_dir }}/cmd/algorand-indexer/algorand-indexer"
+        dest: /usr/local/bin
+        mode: 0755
+
+- name: Build & Install conduit
+  when: indexer_install_conduit | bool
+  block:
+
+    - name: Build conduit
+      environment:
+        PATH: "{{ ansible_env.PATH }}:{{ __indexer_golang_root }}/bin"
+        GOROOT: "{{ __indexer_golang_root }}"
+        GOPATH: "{{ ansible_env.HOME }}/go"
+        ARCH_TYPE: amd64
+      community.general.make:
+        target: conduit
+        chdir: "{{ __indexer_git_dir }}"
+
+    - name: Install conduit
+      ansible.builtin.copy:
+        remote_src: yes
+        src: "{{ __indexer_git_dir }}/cmd/conduit/conduit"
+        dest: /usr/local/bin
+        mode: 0755
