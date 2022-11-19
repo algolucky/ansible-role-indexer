@@ -7,7 +7,7 @@ __indexer_golang_version: "1.17.13"
 __indexer_golang_root: /usr/local/go
 
 # indexer build dependencies
-__indexer_dependencies:
+__indexer_build_dependencies:
   - build-essential
   - git
   - libboost-all-dev

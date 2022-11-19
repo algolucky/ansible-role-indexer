@@ -18,9 +18,9 @@
     dest: /usr/local
     creates: "{{ __indexer_golang_root }}"
 
-- name: Install Dependencies
+- name: Install Build Dependencies
   ansible.builtin.package:
-    name: "{{ __indexer_dependencies }}"
+    name: "{{ __indexer_build_dependencies }}"
     state: present
 
 - name: Register __indexer_git_dir
