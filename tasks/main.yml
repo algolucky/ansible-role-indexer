@@ -1,7 +1,12 @@
 ---
+- name: Check for algorand-indexer
+  stat:
+    path: /usr/local/bin/algorand-indexer
+  register: __indexer_check
+
 - name: Install from Source
   ansible.builtin.import_tasks: install-from-source.yml
-  when: indexer_install_from_source | bool
+  when: not __indexer_check.stat.exists and indexer_install_from_source | bool
 
 - name: Configure algorand-indexer
   ansible.builtin.import_tasks: configure.yml

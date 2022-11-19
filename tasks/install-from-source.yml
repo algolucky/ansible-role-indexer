@@ -4,7 +4,7 @@
     state: directory
   register: __indexer_temp_dir
 
-- name: Download Go {{ __indexer_golang_version }} 
+- name: Download Go {{ __indexer_golang_version }}
   ansible.builtin.get_url:
     url: https://dl.google.com/go/go{{ __indexer_golang_version }}.linux-amd64.tar.gz
     checksum: sha256:4cdd2bc664724dc7db94ad51b503512c5ae7220951cac568120f64f8e94399fc
@@ -27,7 +27,7 @@
   ansible.builtin.set_fact:
     __indexer_git_dir: "{{ __indexer_temp_dir.path }}/indexer"
 
-- name: Clone Git Repository
+- name: Clone algorand-indexer Git Repository
   ansible.builtin.git:
     repo: "{{ __indexer_repo_url }}"
     dest: "{{ __indexer_git_dir }}"
@@ -80,3 +80,4 @@
   file:
     path: "{{ __indexer_temp_dir.path }}"
     state: absent
+  when: __indexer_temp_dir is changed
