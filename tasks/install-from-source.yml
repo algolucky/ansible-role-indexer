@@ -10,6 +10,9 @@
     checksum: sha256:4cdd2bc664724dc7db94ad51b503512c5ae7220951cac568120f64f8e94399fc
     dest: "{{ __indexer_temp_dir.path }}"
   register: __indexer_go_download
+  until: __indexer_go_download is success
+  retries: 5
+  delay: 5
 
 - name: Install Go {{ __indexer_golang_version }}
   ansible.builtin.unarchive:
@@ -33,7 +36,6 @@
     dest: "{{ __indexer_git_dir }}"
     track_submodules: yes
     version: "{{ indexer_source_version }}"
-  register: __indexer_git_repo
 
 - name: Build & Install algorand-indexer
   block:
