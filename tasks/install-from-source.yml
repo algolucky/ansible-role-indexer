@@ -9,6 +9,7 @@
     url: https://dl.google.com/go/go{{ __indexer_golang_version }}.linux-amd64.tar.gz
     checksum: sha256:4cdd2bc664724dc7db94ad51b503512c5ae7220951cac568120f64f8e94399fc
     dest: "{{ __indexer_temp_dir.path }}"
+    mode: 0664
   register: __indexer_go_download
   until: __indexer_go_download is success
   retries: 5
@@ -39,7 +40,6 @@
 
 - name: Build & Install algorand-indexer
   block:
-
     - name: Build algorand-indexer
       environment:
         PATH: "{{ ansible_env.PATH }}:{{ __indexer_golang_root }}/bin"
@@ -60,7 +60,6 @@
 - name: Build & Install conduit
   when: indexer_install_conduit | bool
   block:
-
     - name: Build conduit
       environment:
         PATH: "{{ ansible_env.PATH }}:{{ __indexer_golang_root }}/bin"
@@ -78,8 +77,8 @@
         dest: /usr/local/bin
         mode: 0755
 
-- name: Cleanup Temporary Directory
-  file:
+- name: Cleanup Temporary Directory # noqa no-handler
+  ansible.builtin.file:
     path: "{{ __indexer_temp_dir.path }}"
     state: absent
   when: __indexer_temp_dir is changed
