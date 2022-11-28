@@ -1,5 +1,4 @@
 ---
-
 # whether or not to install conduit
 indexer_install_conduit: no
 

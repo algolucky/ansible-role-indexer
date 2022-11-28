@@ -1,5 +1,4 @@
 ---
-
 # git repository URL
 __indexer_repo_url: https://github.com/algorand/indexer
 
@@ -15,4 +14,3 @@ __indexer_build_dependencies:
   - sqlite3
   - autoconf
   - bsdmainutils
-
