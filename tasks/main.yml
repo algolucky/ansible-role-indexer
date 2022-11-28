@@ -1,6 +1,6 @@
 ---
 - name: Check for algorand-indexer
-  stat:
+  ansible.builtin.stat:
     path: /usr/local/bin/algorand-indexer
   register: __indexer_check
 
